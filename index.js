@@ -95,6 +95,7 @@ const createRequest = (input, callback) => {
       // result key. This allows different adapters to be compatible with
       // one another.
       console.log(response.data)
+      response.data.result = response.data.Hash
       callback(response.status, Requester.success(jobRunID, response))
     })
     .catch(error => {

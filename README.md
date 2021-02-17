@@ -1,44 +1,63 @@
-# Chainlink NodeJS External Adapter Template
+# Chainlink NodeJS IPFS External Adapter
 
-This template provides a basic framework for developing Chainlink external adapters in NodeJS. Comments are included to assist with development and testing of the external adapter. Once the API-specific values (like query parameters and API key authentication) have been added to the adapter, it is very easy to add some tests to verify that the data will be correctly formatted when returned to the Chainlink node. There is no need to use any additional frameworks or to run a Chainlink node in order to test the adapter.
+Send and get data from your IPFS node. 
 
 ## Creating your own adapter from this template
 
 Clone this repo and change "ExternalAdapterProject" below to the name of your project
 
 ```bash
-git clone https://github.com/thodges-gh/CL-EA-NodeJS-Template.git ExternalAdapterProject
+git clone https://github.com/PatrickAlphaC/ipfs_cl_ea
 ```
 
 Enter into the newly-created directory
 
 ```bash
-cd ExternalAdapterProject
-```
-
-You can remove the existing git history by running:
-
-```bash
-rm -rf .git
+cd ipfs_cl_ea
 ```
 
 See [Install Locally](#install-locally) for a quickstart
 
 ## Input Params
 
-- `base`, `from`, or `coin`: The symbol of the currency to query
-- `quote`, `to`, or `market`: The symbol of the currency to convert to
+This is currently a work in progress, and supports some of the [IPFS HTTP parameters.](https://docs.ipfs.io/reference/http/api/)
+
+PRs are welcome :)
+
+- `endpoint`: The endpoint to use from the IPFS API
+- `ipfs_host`: The Base URL of you IPFS host
+
+Parameters from the IPFS API: 
+```
+  quiet: false,
+  quieter: false,
+  silent: false,
+  progress: false,
+  trickle: false,
+  pin: false,
+  file: false, // The location of the file you want to upload
+  arg: false
+```
+
+## Example input
+
+```
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"file":"./test/test.json"}}'
+```
 
 ## Output
 
 ```json
 {
- "jobRunID": "278c97ffadb54a5bbb93cfec5f7b5503",
- "data": {
-  "USD": 164.02,
-  "result": 164.02
- },
- "statusCode": 200
+  "jobRunID":0,
+  "data":{
+    "Name":"test.json",
+    "Hash":"Qmd3zUksep8MQnjeSsXgEE4xa2DKgw48HJPjk5BiMDn1u7",
+    "Size":"24",
+    "result":"Qmd3zUksep8MQnjeSsXgEE4xa2DKgw48HJPjk5BiMDn1u7"
+  },
+  "result":"Qmd3zUksep8MQnjeSsXgEE4xa2DKgw48HJPjk5BiMDn1u7",
+  "statusCode":200
 }
 ```
 
@@ -69,7 +88,7 @@ yarn start
 ## Call the external adapter/API server
 
 ```bash
-curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": { "from": "ETH", "to": "USD" } }'
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"file":"./test/test.json"}}'
 ```
 
 ## Docker
