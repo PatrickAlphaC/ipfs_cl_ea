@@ -60,6 +60,19 @@ curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data 
   "statusCode":200
 }
 ```
+or
+
+## Example input
+
+```bash
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"endpoint":"api/v0/cat", "arg":"Qmd3zUksep8MQnjeSsXgEE4xa2DKgw48HJPjk5BiMDn1u7"}}'
+```
+
+## Output
+
+```json
+{"jobRunID":0,"data":{"cat":"dog"},"statusCode":200}
+```
 
 ## Install Locally
 

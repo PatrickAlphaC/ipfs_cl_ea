@@ -66,17 +66,25 @@ const createRequest = (input, callback) => {
 
   //application/x-www-form-urlencoded
   // headers: { 'content-type': 'application/x-www-form-urlencoded' },
+
   const form = new FormData()
-  form.append('file', fs.createReadStream(file))
+  let form_config = {}
+  if (file != null) {
+    form.append('file', fs.createReadStream(file))
+    form_config = {
+      data: form,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        ...form.getHeaders()
+      }
+    }
+  }
+
   const config = {
     url,
     params,
     method: 'POST',
-    data: form,
-    headers: {
-      "Content-Type": "multipart/form-data",
-      ...form.getHeaders()
-    }
+    ...form_config
   }
   console.log(config)
   // fileUpload(file){ 
