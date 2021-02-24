@@ -2,6 +2,11 @@
 
 Send and get data from your IPFS node. 
 
+## TODO
+- Write tests
+- Make `text_for_file` more robust (not allow one without the other)
+- Any parameters can be passed instead of custom parameters
+
 ## Creating your own adapter from this template
 
 Clone this repo and change "ExternalAdapterProject" below to the name of your project
@@ -26,6 +31,7 @@ PRs are welcome :)
 
 - `endpoint`: The endpoint to use from the IPFS API
 - `ipfs_host`: The Base URL of you IPFS host
+- `starting_char`: Which character to start at for returning the string
 
 Parameters from the IPFS API: 
 ```
@@ -72,6 +78,18 @@ curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data 
 
 ```json
 {"jobRunID":0,"data":{"cat":"dog"},"statusCode":200}
+```
+
+## Example Input 
+
+```bash
+curl -X POST -H "content-type:application/json" "http://localhost--data '{ "id": 0, "data": {"text_for_file_name":"patrick.json", "text_for_file":"[\"dog\"]"}}'
+```
+
+## Output
+
+```json
+{"jobRunID":0,"data":{"Name":"patrick.json","Hash":"QmWk8NQVeoXyMizcxT3D2y85eFDQGQfmRvupCnni3nuS1q","Size":"15","result":"QmWk8NQVeoXyMizcxT3D2y85eFDQGQfmRvupCnni3nuS1q"},"result":"QmWk8NQVeoXyMizcxT3D2y85eFDQGQfmRvupCnni3nuS1q","statusCode":200}
 ```
 
 ## Install Locally

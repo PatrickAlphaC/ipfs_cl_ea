@@ -17,6 +17,8 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
+  text_for_file: false,
+  text_for_file_name: false,
   quiet: false,
   quieter: false,
   silent: false,
@@ -26,7 +28,8 @@ const customParams = {
   file: false,
   ipfs_host: false,
   endpoint: false,
-  arg: false
+  arg: false,
+  starting_char: false
 }
 
 const createRequest = (input, callback) => {
@@ -39,12 +42,13 @@ const createRequest = (input, callback) => {
   const progress = validator.validated.data.progress || 'false'
   const trickle = validator.validated.data.trickle || 'false'
   const pin = validator.validated.data.pin || 'true'
-  const file = validator.validated.data.file
+  let file = validator.validated.data.file
   const arg = validator.validated.data.arg
+  const text_for_file = validator.validated.data.text_for_file
+  const text_for_file_name = validator.validated.data.text_for_file_name
   const ipfs_host = validator.validated.data.ipfs_host || 'http://127.0.0.1:5001/'
   const endpoint = validator.validated.data.endpoint || 'api/v0/add'
-
-
+  const starting_char = validator.validated.data.starting_char || 0
 
   const url = `${ipfs_host}${endpoint}`
 
@@ -66,9 +70,18 @@ const createRequest = (input, callback) => {
 
   //application/x-www-form-urlencoded
   // headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  if (text_for_file_name != null) {
+    fs.writeFileSync('./file_uploads/' + text_for_file_name, text_for_file)
+    console.log(text_for_file + ' > ' + text_for_file_name)
+    console.log(text_for_file_name)
+    file = './file_uploads/' + text_for_file_name
+    console.log(file)
+  }
+
 
   const form = new FormData()
   let form_config = {}
+  console.log("THIS  THIS THE FILE" + file)
   if (file != null) {
     form.append('file', fs.createReadStream(file))
     form_config = {
@@ -104,6 +117,14 @@ const createRequest = (input, callback) => {
       // one another.
       console.log(response.data)
       response.data.result = response.data.Hash
+      console.log(starting_char)
+      if (starting_char > 0) {
+        console.log("test")
+        response.data.result = response.data.result.substring(starting_char, response.data.result.length)
+        console.log(response.data.result)
+
+      }
+
       callback(response.status, Requester.success(jobRunID, response))
     })
     .catch(error => {
