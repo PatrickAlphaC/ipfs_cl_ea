@@ -1,3 +1,5 @@
+> This repo is a proof of concept only 
+> 
 # Chainlink NodeJS IPFS External Adapter
 
 Send and get data from your IPFS node. 
